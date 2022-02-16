@@ -277,7 +277,7 @@ int DecoderBase::DecodeOnePacket() {
 //                result = 0;
 //                goto __EXIT;
 //            }
-
+            // 解码
             if(avcodec_send_packet(m_AVCodecContext, m_Packet) == AVERROR_EOF) {
                 //解码结束
                 result = -1;
@@ -287,6 +287,7 @@ int DecoderBase::DecodeOnePacket() {
             //一个 packet 包含多少 frame?
             int frameCount = 0;
             while (avcodec_receive_frame(m_AVCodecContext, m_Frame) == 0) {
+                // 获取到m_Frame解码数据，然后进行格式转换和渲染
                 //更新时间戳
                 UpdateTimeStamp();
                 //同步

@@ -45,15 +45,18 @@ void NativeRender::Init(int videoWidth, int videoHeight, int *dstSize)
     dstSize[1] = m_DstHeight;
 }
 
+// 把一帧图像刷写到ANativeWindow的缓存区
 void NativeRender::RenderVideoFrame(NativeImage *pImage)
 {
     if(m_NativeWindow == nullptr || pImage == nullptr) return;
     ANativeWindow_lock(m_NativeWindow, &m_NativeWindowBuffer, nullptr);
+    // 获得bits的起始指针
     uint8_t *dstBuffer = static_cast<uint8_t *>(m_NativeWindowBuffer.bits);
 
     int srcLineSize = pImage->width * 4;//RGBA
     int dstLineSize = m_NativeWindowBuffer.stride * 4;
 
+    // 把图像数据拷贝到NativeWindowBuffer的bits区域，每次指针地址增加i * dstLineSize
     for (int i = 0; i < m_DstHeight; ++i) {
         memcpy(dstBuffer + i * dstLineSize, pImage->ppPlane[0] + i * srcLineSize, srcLineSize);
     }

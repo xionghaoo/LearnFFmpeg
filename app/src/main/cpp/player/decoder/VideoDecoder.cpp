@@ -35,7 +35,7 @@ void VideoDecoder::OnDecoderReady() {
         m_FrameBuffer = (uint8_t *) av_malloc(bufferSize * sizeof(uint8_t));
         av_image_fill_arrays(m_RGBAFrame->data, m_RGBAFrame->linesize,
                              m_FrameBuffer, DST_PIXEL_FORMAT, m_RenderWidth, m_RenderHeight, 1);
-
+        // 初始化图像格式转换
         m_SwsContext = sws_getContext(m_VideoWidth, m_VideoHeight, GetCodecContext()->pix_fmt,
                                       m_RenderWidth, m_RenderHeight, DST_PIXEL_FORMAT,
                                       SWS_FAST_BILINEAR, NULL, NULL, NULL);
